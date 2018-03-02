@@ -21,6 +21,6 @@ filepath used to store the Java project
 
 
 **known bugs**
-- Saving note content with multiple lines will be consolidated into one line upon closing and restarting the program
+- Saving Note content with multiple lines will be consolidated into one line upon closing and restarting the program
 
 
