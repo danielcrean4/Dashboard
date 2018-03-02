@@ -1,0 +1,125 @@
+.button {
+    -fx-font: 12px "Serif";
+    -fx-padding: 5;
+}
+
+.label {
+	-fx-text-fill: BLACK;
+	-fx-font: 16px "Serif";
+}
+
+.text-area {
+	
+	
+}
+
+/* Class belongs to text area */
+.text-area .content {
+	
+}
+
+
+/* Left Panel Objects */
+
+#left-panel {
+	-fx-background-color: WHITE;
+    -fx-spacing: 5;
+    -fx-alignment: top-left;
+    -fx-min-width: 220px;
+    -fx-max-width: 220px;
+    
+}
+
+#subject-link{
+    -fx-font: 12px "Serif";
+    -fx-text-fill: BLACK;
+}
+
+#subject-link:hover{
+    -fx-text-fill: GREEN;
+}
+
+#subject-input-text {
+	-fx-max-width: 100px;
+	
+}
+
+#add-subject-button {
+	
+}
+
+#subject-input-hbox {
+	-fx-spacing: 10;
+}
+
+/* Center Panel objects */
+
+#center-panel {
+	-fx-background-color: WHITE;
+    -fx-alignment: top-center;
+    -fx-spacing: 5;
+}
+
+
+
+#subject-label {
+
+}
+
+
+#note-hbox{
+	-fx-alignment: center;
+	-fx-spacing: 10;
+
+}
+
+#note-input-text{
+	
+}
+
+#create-note-button{
+	
+}
+
+#note-link {
+    -fx-font: 12px "Serif";
+    -fx-text-fill: BLACK;
+}
+
+#note-link:hover {
+    -fx-text-fill: GREEN;
+}
+
+#delete-subject-button{
+	
+}
+
+#subject-delete-hbox{
+	-fx-alignment: center;
+	-fx-spacing: 10;
+	
+}
+
+
+/* Right Panel Objects */
+
+#right-panel {
+	-fx-background-color: WHITE;
+    -fx-min-width: 400px;
+    -fx-max-width: 400px;
+    -fx-spacing: 5;
+}
+
+
+#content-area {
+	-fx-max-width: 350px;
+}
+
+#title-label {
+	
+}
+
+#note-button-box{
+	-fx-spacing: 10;
+	-fx-alignment: center;
+}
