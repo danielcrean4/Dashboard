@@ -23,6 +23,6 @@ filepath used to store the Java project
 **known bugs**
 - Saving Note content with multiple lines will be consolidated into one line upon closing and restarting the program
 
-** next steps **
+**next steps**
 - review and clean up comments
 - test for additional bugs
