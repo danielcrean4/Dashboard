@@ -26,3 +26,4 @@ filepath used to store the Java project
 **next steps**
 - review and clean up comments
 - test for additional bugs
+- update CSS File
