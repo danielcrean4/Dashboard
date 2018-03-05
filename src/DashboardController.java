@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -12,43 +14,48 @@ import javafx.scene.layout.HBox;
 public class DashboardController {
 	
 	
-	//Views and Model controlled by the controller
+	// Views and Model controlled by the controller
 	private DashboardModel theModel;
 	private DashboardView theView;
 	
-	//Active Subjects/Notes
+	// Active Subjects/Notes
 	private SubjectNode activeSubject;
 	private NoteNode activeNote;
 	
 	
 	
-	//Constructor
+	// Constructor
 	public DashboardController(DashboardModel theModel) {
 		this.theModel = theModel;
 		
 	}
 	
 	
-	//Setter Functions
+	// Setter Functions
 	void setView(DashboardView theView) {
 		this.theView = theView;
 	}
 	
 	
-	//Button Functions - called from DashboardView Class
+	// Button Functions - called from DashboardView Class
 
 
 	
 	public void createNewSubject() {
 				
-		//Checks if TextField is empty - does not allow construction of SubjectWithout Title
-		if (theView.getSubjectInputText().getText().equals("")) {
+		// Checks if TextField is empty - does not allow construction of Subject Without Title
+		
+		if (theView.getSubjectInputText().getText().trim().equals("")) {
+			
+			//Clears the subject field and the method returns if empty
 			theView.getSubjectInputText().clear();
 			return;
+			
 		}
 		
 		
-		//get text from the input field and create a Subject to be stored in the Model - the input field is cleared afterwards
+		// Get text from the input field and create a Subject to be stored in the Model - the input field is cleared afterwards
+		
 		String subjectTitle = theView.getSubjectInputText().getText();
 		
 		theModel.addSubject(subjectTitle);
@@ -67,7 +74,7 @@ public class DashboardController {
 	
 	public void createNewNote() {
 		
-		//Constructs NoteNode with data input into the window, then clears the text for the next input
+		// Constructs NoteNode with data input into the window, then clears the text for the next input
 		
 		String newNoteTitle = theView.getNoteInputText().getText();
 		
@@ -77,25 +84,26 @@ public class DashboardController {
 			return;
 		}
 		
+		// Creates a new note with the Title that was input in the Text Field
+		
 		NoteNode newNote = new NoteNode(theView.getNoteInputText().getText());
 	
-		//If a subject hasn't been selected a Note cannot be created
-		//****** change this to include a warning
+		// If a subject hasn't been selected a Note cannot be created, and a warning is displayed
 		if(activeSubject == null) {
 			Alert alert = new Alert(AlertType.ERROR, "No Subject selected - Note was not created. Select a subject before entering", ButtonType.OK);
 			alert.showAndWait();
 			return;
 		}
 		
+		// Clear Note Text Input Area 
+		
 		theView.getNoteInputText().clear();
 		
-		try{
-			activeSubject.addLast(newNote);
-			refreshCenterPanel();
-		}
-		catch (Exception e) {
-			System.out.println("Issue with adding new note to subject node");
-		}
+		// Add the created note to the active Subject's ArrayList
+		activeSubject.addLast(newNote);
+		
+		refreshCenterPanel();
+
 		
 	}
 	
@@ -113,11 +121,16 @@ public class DashboardController {
 		
 		try {
 			
-			//Get first Subject in the List to create the first link
-			SubjectNode newSubject = theModel.getSubjectList().getFirst();
+			//Create Iterator to access each Subject in the list
+			
+			Iterator<SubjectNode> subjectCheck = theModel.getSubjectList().iterator();
+			
 			
 			//Loop through all Subjects in theList
-			for(int i = 0; i < theModel.getSubjectList().size(); i++) {
+			while(subjectCheck.hasNext()) {
+				
+				//Get the next subject
+				SubjectNode newSubject = subjectCheck.next();
 				
 				//Create new link for the current subject
 				SubjectLink newLink = new SubjectLink(this, newSubject);
@@ -127,9 +140,7 @@ public class DashboardController {
 				
 				//Add new link to Left Panel
 				theView.getLeftPanel().getChildren().add(newLink);
-				
-				//Iterate to Next Subject
-				newSubject = newSubject.getNextSubject();
+
 			}
 		}
 		
@@ -186,22 +197,21 @@ public class DashboardController {
 		//Adds a new note link for each note stored in the subject
 		try {
 			
-			//Get First Note to create link
-			NoteNode newNote = activeSubject.getFirst();
+			//Create Iterator
+			
+			Iterator<NoteNode> noteCheck = activeSubject.getNoteList().iterator();
 			
 			//Loop through all Notes Belonging to the Active Subject
-			for(int i = 0; i < activeSubject.getNoteCount(); i++) {
+			while(noteCheck.hasNext()) {
 				
-				NoteLink newLink = new NoteLink(this, newNote);
+				NoteLink newLink = new NoteLink(this, noteCheck.next());
 				
 				//Set CSS ID
 				newLink.setId("note-link");
 				
 				//Add Link to Panel
 				theView.getCenterPanel().getChildren().add(newLink);
-				
-				//Move to next note
-				newNote = newNote.getNext();
+
 			}
 		
 		}
@@ -236,9 +246,15 @@ public class DashboardController {
 
 			
 			//Set content Area to default as uneditable
+			
 			contentArea.setEditable(false);
 			
+			
+			// Button to flip between editable/uneditable
+			
 			Button editButton = new Button("Toggle Edit Mode");
+			
+			// On Click Action Listener - button changes Editable state		
 			
 			editButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
@@ -247,22 +263,34 @@ public class DashboardController {
 				}
 			});
 			
+			
+			// Button to save any updates to the Note's content
+			
 			Button saveEditButton = new Button("Save Updates to Note");
+			
+			// On click Action Listener- takes content from text area and saves it in NoteNode.Content
 			
 			saveEditButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					
+					// Gets updated text
 					String noteContent = contentArea.getText();
-
+					
+					// Saves updated text
 					activeNote.setContent(noteContent);
 					
-					System.out.println(activeNote.getContent());
+					// Panel refreshes when done
 					refreshRightPanel();
 					
 				}
 			});
 			
+			
+			// Button to delete the Note
+			
 			Button deleteNoteButton = new Button("Delete Note");
+			
+			// On click Action Listener
 			
 			deleteNoteButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
