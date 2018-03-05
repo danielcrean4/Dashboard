@@ -17,7 +17,9 @@ public class SubjectLink extends Hyperlink{
 	
 	public void arm() {
 		theController.setActiveSubject(theSubject);
+		theController.setActiveNote(null);
 		theController.refreshCenterPanel();
+		theController.refreshRightPanel();
 	}
 	
 }
